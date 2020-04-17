@@ -1,0 +1,60 @@
+{{ define "title" }}{{ .Post.Title }} - CBoard{{ end }}
+{{ define "content" }}
+{{ if .Post.Id }}
+<form action="/api/v1/newcomment" method="post" enctype="multipart/form-data">
+    <h2>Reply to this post:</h2>
+    <label for="content">Content:</label><br>
+    <input type="text" id="content" name="content"><br><br>
+    <input type="file" name="img" id="img" accept=".gif, .jpg, .png"><br><br>
+    <input type="hidden" id="parent" name="parent" value="{{ .Post.Id }}">
+    <input type="hidden" name="board" value="{{ .Post.Board }}">
+    <input type="submit" value="Submit">
+</form>
+<div class="content">
+    <section id="post"></section>
+    <div class="posts">
+        <div class="post on-list">
+            <h1 class="post-title">{{ .Post.Title }}</h1>
+            <div class="post-meta">
+                <span class="post-date">{{ .Post.CreatedAt }}</span>
+                <span class="post-author">:: {{ .Post.Id }}</span>
+            </div>
+            {{ if .Post.Ext }}
+            <img src="/img/{{ .Post.Id }}.{{ .Post.Ext }}" class="post-cover" />
+            {{ end }}
+            <div class="post-content">
+                {{ .Post.Content }}
+            </div>
+        </div>
+        {{ if .Comments }} {{ range .Comments }}
+        <section id="c{{ .Id }}"></section>
+        <div class="post on-list">
+            <div class="post-meta">
+                <span class="post-date">{{ .CreatedAt }}</span>
+                <span class="post-author">:: {{ .Id }}</span>
+            </div>
+            {{ if .Ext }}
+            <img src="/img/{{ .Id }}.{{ .Ext }}" class="post-cover" />
+            {{ end }}
+            <div class="post-content">
+                {{ .Content }}
+            </div>
+        </div>
+        {{ end }}
+        {{ end }}
+        {{ else }}
+        <div class="post on-list">
+            <h1 class="post-title">No Posts Found</h1>
+            <div class="post-meta">
+                <span class="post-date"></span>
+                <span class="post-author"></span>
+            </div>
+            <div class="post-content">
+                No posts were found!
+            </div>
+        </div>
+        {{ end }}
+
+    </div>
+</div>
+{{ end }}

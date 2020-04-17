@@ -1,0 +1,47 @@
+{{ define "title" }}{{ .BoardNum }} - CBoard{{ end }}
+{{ define "content" }}
+<form action="/api/v1/newpost" method="post" enctype="multipart/form-data">
+    <h2>Create a new post:</h2>
+    <label for="title">Title:</label><br>
+    <input type="text" id="title" name="title"><br>
+    <label for="content">Content:</label><br>
+    <input type="text" id="content" name="content"><br><br>
+    <input type="file" name="img" id="img" accept=".gif, .jpg, .png"><br><br>
+    <input type="hidden" name="board" value="{{ .BoardNum }}">
+    <input type="submit" value="Submit">
+</form>
+<div class="content">
+    <div class="posts">
+        {{ if .Posts }} {{ range .Posts }}
+        <div class="post on-list">
+            <h1 class="post-title">{{ .Title }}</h1>
+            <div class="post-meta">
+                <span class="post-date">{{ .CreatedAt }}</span>
+                <span class="post-author">:: {{ .Id }}</span>
+            </div>
+            {{ if .Ext }}
+            <img src="/img/{{ .Id }}.{{ .Ext }}" class="post-cover" />
+            {{ end }}
+            <div class="post-content">
+                {{ .Content }}
+            </div>
+            <div>
+                <a class="read-more button"
+                   href="/post/{{ .Id }}#post">Comments →</a>
+            </div>
+        </div>
+        {{ end }} {{ else }}
+        <div class="post on-list">
+            <h1 class="post-title">No Posts Found</h1>
+            <div class="post-meta">
+                <span class="post-date"></span>
+                <span class="post-author"></span>
+            </div>
+            <div class="post-content">
+                No posts were found!
+            </div>
+        </div>
+        {{ end }}
+    </div>
+</div>
+{{ end }}
