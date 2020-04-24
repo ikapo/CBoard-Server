@@ -4,7 +4,7 @@
 <form action="/api/v1/newcomment" method="post" enctype="multipart/form-data">
     <h2>Reply to this post:</h2>
     <label for="content">Content:</label><br>
-    <input type="text" id="content" name="content"><br><br>
+    <textarea id="content" name="content" cols="30" rows="7" maxlength="800"></textarea><br><br>
     <input type="file" name="img" id="img" accept=".gif, .jpg, .png"><br><br>
     <input type="hidden" id="parent" name="parent" value="{{ .Post.Id }}">
     <input type="hidden" name="board" value="{{ .Post.Board }}">
